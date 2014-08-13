@@ -38,7 +38,7 @@ public class DAL {
 		try 
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/clubber_db?useUnicode=true&characterEncoding=UTF8", "root", "a");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/clubber_db?useUnicode=true&characterEncoding=UTF8", "root", "qwe123");
 			stmt= conn.createStatement();	
 		} 
 		catch (SQLException e) {
@@ -47,7 +47,8 @@ public class DAL {
 			disconnectFromDBServer();
 		}	
 	}
-	
+
+	 
 	private static void disconnectFromDBServer()
 	{
 		if (conn != null) {
@@ -418,7 +419,7 @@ public class DAL {
 		Date date2= df.parse(date);
 		java.sql.Date sqlDate = new java.sql.Date(date2.getTime());
 				
-		String sql= "INSERT INTO USERS(User_Type, First_Name, Last_Name, Gender, Phone_Number, Email, Password, Birth_Date)"
+		String sql= "INSERT INTO users(User_Type, First_Name, Last_Name, Gender, Phone_Number, Email, Password, Birth_Date)"
 				+ " VALUES('"+userType+"','"+userData.getFirstName()+"','"+userData.getLastName()+"','"+userData.getGender()+"','"+userData.getPhoneNumber()+"','"+userData.getEmail()+"','"+userData.getPassword()+"','"+sqlDate+"')";
 		try {
 			stmt.executeUpdate(sql);
@@ -864,18 +865,17 @@ public class DAL {
 		   
 		   ArrayList<BusinessData> data = new ArrayList<BusinessData>();
 		// access date fields
-			
 			connectToDBServer();
 			
 			try 
 			{
 				ResultSet rs = stmt.executeQuery("select * "
-												+ "from line L, Businesses B, areas a, city c, streets s, business_type t "
+												+ "from line L, businesses B, areas a, city c, streets s, business_type t "
 												+ "where L.Business_id = B.id AND L.Line_Start_Date >= '"+i_Date+"' and"
 											    +" B.area = a.id and "
 											    + "B.city = c.id and "
 									 		    + "B.street = s.id and "
-											    + "B.Business_Type = t.id");	
+											    + "B.Business_Type = t.id");
 
 				while (rs.next())
 				{
@@ -883,7 +883,7 @@ public class DAL {
 					BusinessData bData = new BusinessData();
 					//set business data
 					bData.setM_Id(rs.getInt("b.id"));
-					bData.setM_Name(rs.getString("b.name"));
+					bData.setM_Name(rs.getString("L.name"));
 					bData.setM_StreetId(new IdWithName(rs.getInt("b.street"), rs.getString("s.Name")));
 					bData.setM_HouseNumber(rs.getInt("b.structure_number"));
 					bData.setM_PhoneNumber(rs.getString("b.Business_Phone_Number"));

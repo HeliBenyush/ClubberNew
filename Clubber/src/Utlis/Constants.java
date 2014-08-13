@@ -65,7 +65,7 @@ public class Constants {
 	 public static final String MESSAGE_TEXT = "messageText";
 	 
 	 // Login fields
-	 public static final String LOGIN_FAILED = "loginFailed";
+	 public static final String LOGIN_FAILED = "login Failed111";
 	 
 	 // Password Retrival fields
 	 public static String STATUS_MESSAGE = "statusMessageLabel";

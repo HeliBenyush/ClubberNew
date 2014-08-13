@@ -7,7 +7,6 @@
 			var fullCurrentDateStr = currentYear + "-" + currentMonth + "-"
 					+ currentDay;
 			getMainLinesFromDB(fullCurrentDateStr);
-
 		});
 
 $(function() {
@@ -57,28 +56,70 @@ function loadCheckboxListDataFromDB(data, listName) {
 					});
 }
 
+function dateChange (date){
+	$('#lines_container').html('<img src="images/load.GIF" id="loader_image" >');
+	getMainLinesFromDB(date);
+}
+
 function getMainLinesFromDB(fullDate) {
-	$.ajax({
-		url : "GetDBData",
-		type : "POST",
-		dataType : 'json',
-		data : {
-			RequestType : "GetDBData-WelcomeLines",
-			InDate : fullDate
-		},
-		success : function(data) {
+	console.log('function approched');
+	
+	console.log('Getting template from server');
+	
+	$.get( "patternTemplates/lineBox.tpl", function( data ) {
+		 var lineTemplate = data;
+		  console.log('template was loaded');
+		  
+		  var dataRequest = $.ajax({
+				url : "GetDBData",
+				type : "POST",
+				dataType : 'json',
+				data : {
+					RequestType : "GetDBData-WelcomeLines",
+					InDate : fullDate
+					}
+				});
+		  
+		  dataRequest.done(function(returnedData){
+			  $.each(returnedData, function(){
+				  console.log($(this)[0]);
+				  $('#temp_container').html(lineTemplate);
+				  var temp_template = $('#temp_container');
+				  temp_template.find('.line_box_place').html($(this)[0]['m_StreetId']['Name']+' '+$(this)[0]['m_HouseNumber']+', '+$(this)[0]['m_CityId']['Name'] );
+				  temp_template.find('.line_box_date').html();
+				  temp_template.find('.line_box_hour').html();
+				  temp_template.find('.line_box_line').html($(this)[0]['m_Lines'][0]['description']);
+				  
+				  
+				  temp_template.find('.line_box_name').html($(this)[0]['m_Name']);
+				  
+				  
+				  $('#lines_container').append($('#temp_container').html());
+				  console.log($(this)[0].m_Name)
+			  });
+			  $('#temp_container').html('');
+		  });
+		 
+		  
+		});
+	
+	
+	
+	
+	/*dataRequest.done(function(data) {
+			console.log(data);
 			if (data != null) {
 				console.log("Loading data from DB");
 				console.log(fullDate);
-				PrintWelcomeLinesTable(data);
+				//PrintWelcomeLinesTable(data);
 			}
 		},
 		error : function(data) {
 
 			console.log("error");
 		}
-	});
-
+	});*/
+$('#loader_image').remove();
 }
 function PrintWelcomeLinesTable(data) {
 	var $Lines = $('#Lines_Div');

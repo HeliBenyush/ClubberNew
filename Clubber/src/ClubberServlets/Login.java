@@ -53,7 +53,7 @@ public class Login extends HttpServlet {
         if(DAL.isEmailExists(emailParam) == false)
         {
         	isSucceed = false;
-        	message = "геаш амчишерй ма чййн ботшлъ";
+        	message = "ЧћЧ™Ч™Чњ ЧњЧђ Ч§Ч™Ч™Чќ Ч‘ЧћЧўЧЁЧ›ЧЄ";
         }
 
         // in case of time stamp exist (user lock) check if passed 3 hours 
@@ -64,7 +64,7 @@ public class Login extends HttpServlet {
         if(timeStamp != 0 && timeStamp > currentDate.getTime())
         {
         	isSucceed = false;
-        	message = "оазш едйе рйсйеъ ошебеъ мотшлъ мма дцмзд, дощъощ рртм.";        		
+        	message = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.";        		
         }
         else if(timeStamp != 0 && timeStamp <= date)
         {
@@ -76,7 +76,7 @@ public class Login extends HttpServlet {
         	if(DAL.isPasswordMatcheEmail(emailParam, passwordParam) == false)
         	{
             	isSucceed = false;
-            	message = "сйсод айрд рлерд";
+            	message = "Ч”ЧЎЧ™ЧЎЧћЧђ Ч©Ч’Ч•Ч™Ч”, Ч‘ЧњЧђЧ!";
             	
             	DAL.increaseLoginAttemptsDB(emailParam);
 
