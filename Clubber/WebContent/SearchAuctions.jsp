@@ -11,21 +11,37 @@
 		<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 		<script src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js" type="text/javascript"></script>
 		<link href="CSS/dataTable.css" rel="stylesheet" type="text/css">		
-		<style>
-		tfoot input {
-        width: 100%;
-        padding: 3px;
-        box-sizing: border-box;
-    }
+		<style type="text/css">
+		table.auctions-table {
+			font-family: verdana,arial,sans-serif;
+			font-size:11px;
+			color:#333333;
+			border-width: 1px;
+			border-color: #a9c6c9;
+			border-collapse: collapse;
+		}
+		table.auctions-table th {
+			border-width: 1px;
+			padding: 8px;
+			border-style: solid;
+			border-color: #a9c6c9;
+		}
+		table.auctions-table td {
+			border-width: 1px;
+			padding: 8px;
+			border-style: solid;
+			border-color: #a9c6c9;
+		}
 		</style>
+
 	</head>
 	<body dir="rtl">
 		<div class="message">
-		התוצאות ממויינות אוטומטית לפי האזורים שבהם יש לך ליין לא ניתן לראות מכרזים באזורים אחרים. 
+		כל המכרזים שפורסמו במערכת:
 		</div>
 		<div class="search-by-my-lines-area">
 			<input type="checkbox" name="searchByMyLines" id="searchByMyLines">
-			חפש לפי התאמה לליינים שלי
+			סנן לפי התאמה לליינים שלי
 			<br>
 		</div>	
       	<div class='all-auctions-container'>
@@ -73,9 +89,8 @@
 		
 		$(".all-auctions-container").html("");
 
-		var table= '<table id="auctionsTable" cellspacing="2">'
-			  +'<thead><tr><th>סוג אירוע</th><th>תאריך</th><th>גיל מינימלי</th><th>איזור</th><th>מספר הצעות שהוצעו</th></tr></thead>';
-			  +'<tfoot><tr><th>סוג אירוע</th><th>תאריך</th><th>גיל מינימלי</th><th>איזור</th><th>מספר הצעות שהוצעו</th></tr></tfoot><tbody>';
+		var table= '<table class="auctions-table" id="auctionsTable" cellspacing="2">'
+			  +'<thead><tr><th>סוג אירוע</th><th>תאריך</th><th>גיל מינימלי</th><th>איזור</th><th>מספר הצעות שהוצעו</th></tr></thead><tbody>';
 
 		for (var item in data) {			
 			table += '<tr id=' +data[item].id+' title="לחץ כאן כדי לראות את פרטי המכרז" onclick="auctionClicked('+data[item].id + ');">'
@@ -124,27 +139,6 @@
 		getAllAuctions();
 	});
 	
-	$(document).ready(function() {
-	    // Setup - add a text input to each footer cell
-	    $('#auctionsTable tfoot th').each( function () {
-	        var title = $('#auctionsTable thead th').eq( $(this).index() ).text();
-	        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-	    } );
-	 
-	    // DataTable
-	    var table = $('#auctionsTable').DataTable();
-	 
-	    // Apply the search
-	    table.columns().eq( 0 ).each( function ( colIdx ) {
-	        $( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
-	            table
-	                .column( colIdx )
-	                .search( this.value )
-	                .draw();
-	        } );
-	    } );
-	} );	
-
-	</script>
+	</script>	
 	</body>
 </html>
