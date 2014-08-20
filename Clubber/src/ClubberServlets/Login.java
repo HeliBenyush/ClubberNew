@@ -3,11 +3,13 @@ package ClubberServlets;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.jms.Session;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import ClubberLogic.DAL;
 import ClubberLogic.UserType;
@@ -40,11 +42,14 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("text/html;charset=UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
 		
+		String firstName = request.getParameter(Constants.FIRST_NAME);
         String emailParam = request.getParameter(Constants.EMAIL);
         String passwordParam = request.getParameter(Constants.PASSWORD);
         UserType userType = UserType.Client;
+        HttpSession session = request.getSession(true);
         
         boolean isSucceed = true; 
         String message = "";
@@ -52,7 +57,7 @@ public class Login extends HttpServlet {
         if(DAL.isEmailExists(emailParam) == false)
         {
         	isSucceed = false;
-        	message = "המייל שהוזן כבר קיים במערכת.";
+        	message = "המייל שהוזן אינו קיים במערכת.";
         }
 
         // in case of time stamp exist (user lock) check if passed 3 hours 
@@ -63,7 +68,7 @@ public class Login extends HttpServlet {
         if(timeStamp != 0 && timeStamp > currentDate.getTime())
         {
         	isSucceed = false;
-        	message = "מאחר והיו ניסיות מרובות למערכת ללא הצלחה, המשתמש ננעל.";        		
+        	message = "מאחר והיו ניסיות מרובים למערכת ללא הצלחה, המשתמש ננעל.";        		
         }
         else if(timeStamp != 0 && timeStamp <= date)
         {
@@ -75,7 +80,7 @@ public class Login extends HttpServlet {
         	if(DAL.isPasswordMatcheEmail(emailParam, passwordParam) == false)
         	{
             	isSucceed = false;
-            	message = "סיסמה אינה נכונה";
+            	message = "הסיסמה אינה נכונה";
             	
             	DAL.increaseLoginAttemptsDB(emailParam);
 
@@ -87,13 +92,15 @@ public class Login extends HttpServlet {
         	else
         	{
         		userType = DAL.getUserType(emailParam);
+        		firstName = DAL.getFirstName(emailParam);
         	}
         }
         
         if(isSucceed == true)
         {
-        	request.getSession(true).setAttribute(Constants.EMAIL, emailParam);
-        	request.getSession(true).setAttribute(Constants.WHO_AM_I, userType);
+        	session.setAttribute(Constants.EMAIL, emailParam);
+        	session.setAttribute(Constants.FIRST_NAME, firstName);
+        	session.setAttribute(Constants.WHO_AM_I, userType);
         	getServletContext().getRequestDispatcher("/ClientProfile.jsp").forward(request, response);
         }
         else

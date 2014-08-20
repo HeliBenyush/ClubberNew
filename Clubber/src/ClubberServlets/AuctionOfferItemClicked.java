@@ -41,6 +41,7 @@ public class AuctionOfferItemClicked extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
 		
 		String requestType= request.getParameter(Constants.CLICKED_ITEM_TYPE);
 		String ID= request.getParameter(Constants.ITEM_ID);

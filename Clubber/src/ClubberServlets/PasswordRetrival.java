@@ -41,6 +41,9 @@ public class PasswordRetrival extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		response.setContentType("text/html; charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        
 		String recipientEmail = request.getParameter(Constants.EMAIL);
 		String statusMessage = "";
 		
@@ -58,7 +61,7 @@ public class PasswordRetrival extends HttpServlet {
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				statusMessage = "щмйзъ сйсод моййм рлщмд";
+				statusMessage = "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ";
 				request.setAttribute(Constants.STATUS_MESSAGE, statusMessage);
 				getServletContext().getRequestDispatcher("/PasswordRetrival.jsp").forward(request, response);
 			}
@@ -68,7 +71,7 @@ public class PasswordRetrival extends HttpServlet {
 		}
 		else
 		{
-			statusMessage = "лъебъ геаш амчишерй айрд чййоъ ботшлъ";
+			statusMessage = "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ";
 			request.setAttribute(Constants.STATUS_MESSAGE, statusMessage);
 			getServletContext().getRequestDispatcher("/PasswordRetrival.jsp").forward(request, response);			
 		}

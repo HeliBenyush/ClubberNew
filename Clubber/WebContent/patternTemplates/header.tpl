@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@page  import="java.util.*" %>
+
 <!DOCTYPE html> 
 <head> 
     <meta charset="UTF-8">
@@ -37,9 +39,8 @@
 <body>
 	<header id="navigation">      
         <div class="navbar" role="banner">
-            <div class="container">
+        	<div class="container">
                 <div class="row">
-                    
                     <div class="col-sm-9">
                         <nav class="navbar-right collapse navbar-collapse">
                             <ul class="nav navbar-nav">                                                                     
@@ -68,10 +69,26 @@
                             <a class="navbar-brand" href="index.jsp"><h1><strong>Clubber</strong></h1></a>
                         </div>
                     </div>
-                    
-                    
                 </div> 
             </div>
+            <div class = "login"	>
+		<%
+		String name = (String)session.getAttribute("firstName");
+		if(name == null)
+		{%>
+        	<form action="Login" method="post">
+        		Email: <input type="text" name="email" placeholder="Email">	Password: <input type="password" name="Password" placeholder="Password">
+				<input type="submit" value="Login">
+			</form>
+			<%}
+			else{
+				out.println("ברוך הבא " + name);%>
+        		<form action="Logout" method="post">
+    			<input type="submit" value="Logout" />
+				</form>
+			<%}%>
+			</div>
+            
         </div>
     </header> <!--/#navigation-->
 

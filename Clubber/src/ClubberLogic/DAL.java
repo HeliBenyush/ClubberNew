@@ -798,7 +798,6 @@ public class DAL {
 			
 			reviews.setPunctuality(reviews.getPunctuality()/totalReviews.size());
 			reviews.setRealiability(reviews.getRealiability()/totalReviews.size());
-
 			reviews.setGeneral((reviews.getPunctuality() + reviews.getRealiability()) / 2);
 		
 		} 
@@ -883,6 +882,7 @@ public class DAL {
 		   ArrayList<BusinessData> data = new ArrayList<BusinessData>();
 		// access date fields
 			
+		   
 			connectToDBServer();
 			
 			try 
@@ -890,10 +890,10 @@ public class DAL {
 				ResultSet rs = stmt.executeQuery("select * "
 												+ "from line L, Businesses B, areas a, city c, streets s, business_type t "
 												+ "where L.Business_id = B.id AND L.Line_End_Date >= '"+parsedDate+"' And"
-											    +" B.Area_id = a.id and "
-											    + "B.city_id = c.id and "
-									 		    + "B.street_id = s.id and "
-											    + "B.Business_Type_id = t.id");	
+											    +" B.Area = a.id and "
+											    + "B.city = c.id and "
+									 		    + "B.street = s.id and "
+											    + "B.Business_Type = t.id");	
 
 				while (rs.next())
 				{
@@ -902,13 +902,13 @@ public class DAL {
 					//set business data
 					bData.setM_Id(rs.getInt("b.id"));
 					bData.setM_Name(rs.getString("b.name"));
-					bData.setM_StreetId(new IdWithName(rs.getInt("b.street_id"), rs.getString("s.Name")));
+					bData.setM_StreetId(new IdWithName(rs.getInt("b.street"), rs.getString("s.Name")));
 					bData.setM_HouseNumber(rs.getInt("b.structure_number"));
 					bData.setM_PhoneNumber(rs.getString("b.Business_Phone_Number"));
 					bData.setM_Description(rs.getString("b.Description"));
-					bData.setM_BusinessTypeId(new IdWithName(rs.getInt("b.Business_Type_id"), rs.getString("t.Name")));
-					bData.setM_CityId(new IdWithName(rs.getInt("b.city_id"), rs.getString("c.Name")));
-					bData.setM_AreaId(new IdWithName(rs.getInt("b.area_id"), rs.getString("a.Name")));
+					bData.setM_BusinessTypeId(new IdWithName(rs.getInt("b.Business_Type"), rs.getString("t.Name")));
+					bData.setM_CityId(new IdWithName(rs.getInt("b.city"), rs.getString("c.Name")));
+					bData.setM_AreaId(new IdWithName(rs.getInt("b.area"), rs.getString("a.Name")));
 					
 					LineData lData = new LineData();
 					date = formatter.parse(i_Date);
@@ -1052,7 +1052,7 @@ public class DAL {
    				   + ", B.Business_Type = '" + businessData.getM_BusinessTypeId().getId() + "'"
   				   + ", B.Business_Phone_Number = '" + businessData.getM_PhoneNumber() + "'"
   				   + ", B.Description = '" + businessData.getM_Description() + "'"
-				   + ", S.City_id = '" + businessData.getM_CityId().getId() + "'"
+				   + ", S.City = '" + businessData.getM_CityId().getId() + "'"
 				   + ", S.Name = '" + businessData.getM_StreetId().getName() + "'"  				   
 				   + " WHERE B.id ='" + businessData.getM_Id() + "' and "
 				   + " S.id ='" + businessData.getM_StreetId().getId() + "'";
@@ -1599,5 +1599,31 @@ public class DAL {
 		
 		
 		return joinLineRequestList;
+	}
+
+	public static String getFirstName(String emailParam) {
+		String firstName =""; 
+		connectToDBServer();
+		try {
+			ResultSet rs = stmt.executeQuery("SELECT first_name "
+										   + "FROM users U "
+										   + "WHERE "  
+										   + "U.Email ='" + emailParam + "'");
+			while (rs.next())
+			{				
+
+				firstName = rs.getString("first_name");
+			}	
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			disconnectFromDBServer();
+		}
+		
+		
+		return firstName;
 	}	
 }

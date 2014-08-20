@@ -41,7 +41,8 @@ public class UpdateBusinessDetails extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	
-        response.setContentType("text/html;charset=UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         String message = "";
         BusinessData businessData = new BusinessData();
         
@@ -75,11 +76,11 @@ public class UpdateBusinessDetails extends HttpServlet {
         
         if(isSucceed == true)
         {
-        	message = "дтглеп бецт";
+        	message = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ";
         }
         else
         {
-        	message = "дтглеп рлщм";
+        	message = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ";
         }
         
         request.setAttribute(Constants.MESSAGE_TEXT, message);
